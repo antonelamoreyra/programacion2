@@ -5,13 +5,26 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from PIL import Image, ImageOps
-def rotacion(grados, direccion= None):
+def rotacion(grados, d= None):
     og= np.array(im)
-    f, c= im.size
+    c, f= im.size
     if grados == 90:
-        M= np.empty((c,f))
+        if d == "der":
+            rotada= [[0] * f for _ in range(c)]
+            for i in range(f):
+                for j in range(c):
+                    rotada[j][f - 1 - i] = og[i][j]
+            return rotada
+        elif d == "izq":
+            rotada= [[0] * f for _ in range(c)]
+            for i in range(f):
+                if i == 264:
+                        break
+                for j in range(c):
+                    rotada[c - 1 - j][i] = og[i][j]
+            return rotada
     elif grados == 180:
-        return [f[::-1] for f in im[::-1]]
+        return [f[::-1] for f in og[::-1]]
     
             
 
@@ -24,10 +37,12 @@ g= int(input("Rotar la imagen 90 o 180 grados? "))
 if g == 90:
     opc= input("izquierda o derecha? escribir izq / der. ")
     if opc == 'izq' or opc == 'der':
-        rotacion(g, opc)
+        plt.imshow(np.array(rotacion(g,opc)))
+        plt.show()
     else:
         print("xd")
 elif g == 180:
-    rotacion(g)
+    plt.imshow(np.array(rotacion(g)))
+    plt.show()
 else:
     print("xd")
